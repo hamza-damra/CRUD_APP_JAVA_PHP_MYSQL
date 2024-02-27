@@ -12,8 +12,22 @@
     <color name="secondary">#FFC107</color> <!-- Amber -->
     <color name="secondary_dark">#FFA000</color> <!-- Dark Amber -->
 
-    <!-- Other colors for text, background, etc -->
+    <color name="customRippleColor">#66BB6A</color> <!-- A semi-transparent green for the ripple -->
+    <!-- Default background color of the view -->
+    <color name="customBackgroundColor">#FFFFFF</color> <!-- White background -->
 
+    <!-- Pressed state color (darker shade for the pressed effect) -->
+    <color name="customPressedColor">#E0E0E0</color> <!-- Light gray for the pressed effect -->
+
+    <!-- Custom Background Color -->
+
+    <!-- Custom Border Color -->
+    <color name="customBorderColor">#FF5722</color> <!-- Deep orange for the border -->
+    <!-- Other colors for text, background, etc -->
+    <color name="startColor">#FF0000</color> <!-- Example: Red -->
+
+    <!-- Define your end color for the animation -->
+    <color name="endColor">#0000FF</color> <!-- Example: Blue -->
     <!-- Common UI colors -->
     <color name="light_grey">#FAFAFA</color>
     <color name="grey">#9E9E9E</color>

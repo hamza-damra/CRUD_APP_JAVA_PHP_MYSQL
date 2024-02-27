@@ -1,12 +1,12 @@
 package com.example.crudapp.model;
 
-import android.util.Log;
-import android.view.ContextMenu;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
 
-    private final List<User> users;
+    private static List<User> users = null;
     private final OnItemClickListener listener;
 
     public interface OnItemClickListener {
@@ -34,7 +34,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_item, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, listener);
     }
 
     @Override
@@ -42,21 +42,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         User user = users.get(position);
         holder.textViewName.setText(user.getName());
         holder.textViewEmail.setText(user.getEmail());
-        Log.d("r", "Binding user: " + user.getName() + ", " + user.getEmail());
-        holder.itemView.setOnClickListener(v -> listener.onItemClick(user));
-
-        holder.itemView.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
-            MenuInflater inflater = new MenuInflater(v.getContext());
-            inflater.inflate(R.menu.context_menu, menu);
-            menu.findItem(R.id.edit).setOnMenuItemClickListener(item -> {
-                listener.onEditClick(user);
-                return true;
-            });
-            menu.findItem(R.id.delete).setOnMenuItemClickListener(item -> {
-                listener.onDeleteClick(user);
-                return true;
-            });
-        });
     }
 
     @Override
@@ -64,20 +49,57 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         return users.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewName, textViewEmail;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewEmail = itemView.findViewById(R.id.textViewEmail);
-            itemView.setOnCreateContextMenuListener(this);
+
+            // Item click listener
+            itemView.setOnClickListener(v -> listener.onItemClick(getUserAtPosition(getAdapterPosition())));
+
+            // Long click listener for custom animation and showing PopupMenu
+            itemView.setOnLongClickListener(view -> {
+                // Perform haptic feedback
+                view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+
+                // Load and start fade out animation
+                Animation fadeOutAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.fade_out);
+                view.startAnimation(fadeOutAnimation);
+
+                // Show PopupMenu after animation ends
+                view.postDelayed(() -> {
+                    PopupMenu popup = new PopupMenu(view.getContext(), view);
+                    popup.getMenuInflater().inflate(R.menu.context_menu, popup.getMenu());
+                    popup.setOnMenuItemClickListener(item -> {
+                       if(item.getItemId() == R.id.edit) {
+                           listener.onEditClick(getUserAtPosition(getAdapterPosition()));
+                           return true;
+                       }
+                            else if(item.getItemId() == R.id.delete) {
+                           listener.onDeleteClick(getUserAtPosition(getAdapterPosition()));
+                           return true;
+                       }
+                          else{
+                                   return false;
+                            }
+
+                    });
+                    popup.show();
+                }, 200); // Delay to ensure animation is visible
+
+                return true;
+            });
         }
 
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(Menu.NONE, R.id.edit, Menu.NONE, "Edit");
-            menu.add(Menu.NONE, R.id.delete, Menu.NONE, "Delete");
+        private User getUserAtPosition(int position) {
+            if(position != RecyclerView.NO_POSITION && position < users.size()) {
+                return users.get(position);
+            }
+            return null;
         }
+
     }
 }

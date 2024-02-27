@@ -1,0 +1,9 @@
+<!-- res/drawable/sea_wave_gradient.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:startColor="#FF1A8DDF"
+        android:centerColor="#FF4BC7DA"
+        android:endColor="#FF1A8DDF"
+        android:angle="0" />
+</shape>

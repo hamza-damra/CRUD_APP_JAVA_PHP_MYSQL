@@ -29,11 +29,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private EditText editTextName, editTextEmail;
-    private Button buttonSave, buttonDelete;
+    @SuppressLint("StaticFieldLeak")
     public static ProgressBar progressBar;
-    private RecyclerView recyclerView;
     private UsersAdapter adapter;
-    private List<User> usersList = new ArrayList<>();
+    private final List<User> usersList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
         editTextName = findViewById(R.id.editTextName);
         editTextEmail = findViewById(R.id.editTextEmail);
-        buttonSave = findViewById(R.id.buttonSave);
-        buttonDelete = findViewById(R.id.buttonDelete);
         progressBar = findViewById(R.id.progressBar);
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new UsersAdapter(usersList, new UsersAdapter.OnItemClickListener() {
@@ -66,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
-        buttonSave.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.buttonSave).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String name = editTextName.getText().toString();
@@ -85,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.buttonDelete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new DeleteAllUsersTask(MainActivity.this).execute();

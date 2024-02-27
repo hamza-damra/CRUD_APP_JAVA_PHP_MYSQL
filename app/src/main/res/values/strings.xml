@@ -3,4 +3,6 @@
     <string name="save">Save</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>
