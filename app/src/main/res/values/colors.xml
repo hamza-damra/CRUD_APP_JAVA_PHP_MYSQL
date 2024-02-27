@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Base application colors -->
+    <color name="primary">#3F51B5</color> <!-- Indigo -->
+    <color name="primary_dark">#303F9F</color> <!-- Dark Indigo -->
+    <color name="accent">#FF4081</color> <!-- Pink -->
+
+    <!-- Secondary colors -->
+    <color name="secondary">#FFC107</color> <!-- Amber -->
+    <color name="secondary_dark">#FFA000</color> <!-- Dark Amber -->
+
+    <!-- Other colors for text, background, etc -->
+
+    <!-- Common UI colors -->
+    <color name="light_grey">#FAFAFA</color>
+    <color name="grey">#9E9E9E</color>
+    <color name="dark_grey">#616161</color>
+
+
+
+
+    <!-- Text colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_icons">#FFFFFF</color>
+
+    <!-- Dividers -->
+    <color name="divider">#BDBDBD</color>
+
+    <!-- Status bar color -->
+    <color name="status_bar">#D32F2F</color>
+</resources>
