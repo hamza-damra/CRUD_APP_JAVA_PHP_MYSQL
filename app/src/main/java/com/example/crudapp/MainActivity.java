@@ -10,8 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     public static ProgressBar progressBar;
     private UsersAdapter adapter;
+    Button buttonSave, buttonDelete;
     private final List<User> usersList = new ArrayList<>();
 
     @Override
@@ -42,8 +46,25 @@ public class MainActivity extends AppCompatActivity {
         editTextName = findViewById(R.id.editTextName);
         editTextEmail = findViewById(R.id.editTextEmail);
         progressBar = findViewById(R.id.progressBar);
+        buttonSave = findViewById(R.id.buttonSave);
+        buttonDelete = findViewById(R.id.buttonDelete);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        ConstraintLayout constraintLayout = findViewById(R.id.mainLayout);
 
+        if(UsersAdapter.ViewHolder.isDarkTheme(this))
+        {
+             constraintLayout.setBackgroundColor(getResources().getColor(R.color.dark_grey));
+             editTextEmail.setTextColor(getResources().getColor(R.color.white));
+                editTextName.setTextColor(getResources().getColor(R.color.white));
+                buttonSave.setBackgroundColor(getResources().getColor(R.color.buttonSaveBackgroundColorForDarkTheme));
+                buttonDelete.setBackgroundColor(getResources().getColor(R.color.buttonDeleteBackgroundColorForDarkTheme));
+        }
+        else
+        {
+            constraintLayout.setBackgroundColor(getResources().getColor(R.color.white));
+            editTextEmail.setTextColor(getResources().getColor(R.color.black));
+            editTextName.setTextColor(getResources().getColor(R.color.black));
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new UsersAdapter(usersList, new UsersAdapter.OnItemClickListener() {
             @Override
@@ -63,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
-        findViewById(R.id.buttonSave).setOnClickListener(new View.OnClickListener() {
+        buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String name = editTextName.getText().toString();
@@ -82,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        findViewById(R.id.buttonDelete).setOnClickListener(new View.OnClickListener() {
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new DeleteAllUsersTask(MainActivity.this).execute();

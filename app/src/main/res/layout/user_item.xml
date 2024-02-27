@@ -5,10 +5,11 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:clickable="true"
+    android:id="@+id/cardView"
     android:focusable="true"
     app:cardElevation="4dp"
     app:cardCornerRadius="8dp"
-    app:cardBackgroundColor="@color/white"> <!-- Reference to white color from colors.xml -->
+    app:cardBackgroundColor="@color/grey"> <!-- Reference to white color from colors.xml -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +24,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/text_primary"
+            android:textColor="@color/black"
         android:paddingBottom="4dp" />
 
         <TextView
@@ -31,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textColor="@color/text_secondary"
+            android:textColor="@color/black"
         android:paddingBottom="8dp" />
 
     </LinearLayout>

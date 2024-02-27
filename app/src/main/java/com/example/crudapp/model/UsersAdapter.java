@@ -1,5 +1,10 @@
 package com.example.crudapp.model;
 
+
+import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +14,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.crudapp.R;
@@ -42,7 +49,16 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         User user = users.get(position);
         holder.textViewName.setText(user.getName());
         holder.textViewEmail.setText(user.getEmail());
+
+        if (holder.isDarkTheme(holder.textViewName.getContext())) {
+            holder.textViewName.setTextColor(holder.textViewName.getResources().getColor(R.color.white));
+            holder.textViewEmail.setTextColor(holder.textViewEmail.getResources().getColor(R.color.white));
+            holder.textViewName.setHintTextColor(holder.textViewName.getResources().getColor(R.color.white));
+            holder.textViewEmail.setHintTextColor(holder.textViewEmail.getResources().getColor(R.color.white));
+        }
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -74,18 +90,17 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                     PopupMenu popup = new PopupMenu(view.getContext(), view);
                     popup.getMenuInflater().inflate(R.menu.context_menu, popup.getMenu());
                     popup.setOnMenuItemClickListener(item -> {
-                       if(item.getItemId() == R.id.edit) {
-                           listener.onEditClick(getUserAtPosition(getAdapterPosition()));
-                           return true;
-                       }
-                            else if(item.getItemId() == R.id.delete) {
-                           listener.onDeleteClick(getUserAtPosition(getAdapterPosition()));
-                           return true;
-                       }
-                          else{
-                                   return false;
-                            }
-
+                        if(item.getItemId() == R.id.edit) {
+                            listener.onEditClick(getUserAtPosition(getAdapterPosition()));
+                            return true;
+                        }
+                        else if(item.getItemId() == R.id.delete) {
+                            listener.onDeleteClick(getUserAtPosition(getAdapterPosition()));
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
                     });
                     popup.show();
                 }, 200); // Delay to ensure animation is visible
@@ -94,12 +109,31 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             });
         }
 
+
+
+
         private User getUserAtPosition(int position) {
-            if(position != RecyclerView.NO_POSITION && position < users.size()) {
+            if (position != RecyclerView.NO_POSITION && position < users.size()) {
                 return users.get(position);
             }
             return null;
         }
 
+        public static boolean isDarkTheme(Context context) {
+            int mode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            if (mode == Configuration.UI_MODE_NIGHT_YES) {
+                Log.d("ThemeUtils", "Dark Theme Detected");
+                return true;
+            } else {
+                Log.d("ThemeUtils", "Light Theme Detected");
+                return false;
+            }
+        }
+
+
     }
+
+
+
+
 }

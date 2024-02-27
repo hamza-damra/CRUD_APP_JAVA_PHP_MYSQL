@@ -1,49 +1,54 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Basic Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Base application colors -->
-    <color name="primary">#3F51B5</color> <!-- Indigo -->
-    <color name="primary_dark">#303F9F</color> <!-- Dark Indigo -->
-    <color name="accent">#FF4081</color> <!-- Pink -->
+    <!-- Base application colors for Dark Theme -->
+    <color name="primary">#1A237E</color> <!-- A darker shade of Indigo for dark theme -->
+    <color name="primary_dark">#0D47A1</color> <!-- An even darker shade of Indigo -->
+    <color name="accent">#FF4081</color> <!-- Pink, remains the same as it can work in both themes -->
+    <color name="buttonSaveBackgroundColorForDarkTheme">#BB86FC</color> <!-- A darker shade of Pink for dark theme -->
+    <!-- Secondary colors for Dark Theme -->
+    <color name="buttonDeleteBackgroundColorForDarkTheme">#03DAC5</color> <!-- A darker shade of Pink for dark theme -->
 
-    <!-- Secondary colors -->
-    <color name="secondary">#FFC107</color> <!-- Amber -->
-    <color name="secondary_dark">#FFA000</color> <!-- Dark Amber -->
+    <color name="secondary">#FFA000</color> <!-- A shade of Amber adjusted for dark theme -->
+    <color name="secondary_dark">#FF6F00</color> <!-- Darker Amber, more vibrant for dark backgrounds -->
 
-    <color name="customRippleColor">#66BB6A</color> <!-- A semi-transparent green for the ripple -->
-    <!-- Default background color of the view -->
-    <color name="customBackgroundColor">#FFFFFF</color> <!-- White background -->
-
-    <!-- Pressed state color (darker shade for the pressed effect) -->
-    <color name="customPressedColor">#E0E0E0</color> <!-- Light gray for the pressed effect -->
-
+    <!-- Adaptations for Dark Theme -->
+    <color name="customRippleColor">#4CAF50</color> <!-- Less transparency for the ripple effect -->
+    <color name="customBackgroundColor">#121212</color> <!-- Very dark shade for background -->
+    <color name="customPressedColor">#757575</color> <!-- Dark grey for pressed effect -->
+    <color name="lightThemeBackground">#FFFFFF</color>
+    <color name="lightThemeTextPrimary">#212121</color>
+    <color name="lightThemeTextSecondary">#757575</color>
+    <color name="darkThemeBackground">#121212</color>
+    <color name="darkThemeTextPrimary">#E0E0E0</color>
+    <color name="darkThemeTextSecondary">#BDBDBD</color>
+    <color name="cardViewDarkBackground">#373737</color>
     <!-- Custom Background Color -->
+    <color name="my_light_primary">#1A237E</color> <!-- Adjusted dark primary color -->
+    <color name="my_dark_primary">#121212</color> <!-- Darker background for dark theme -->
 
     <!-- Custom Border Color -->
-    <color name="customBorderColor">#FF5722</color> <!-- Deep orange for the border -->
-    <!-- Other colors for text, background, etc -->
-    <color name="startColor">#FF0000</color> <!-- Example: Red -->
+    <color name="customBorderColor">#FF5722</color> <!-- Deep orange, remains effective in dark theme -->
 
-    <!-- Define your end color for the animation -->
-    <color name="endColor">#0000FF</color> <!-- Example: Blue -->
-    <!-- Common UI colors -->
-    <color name="light_grey">#FAFAFA</color>
-    <color name="grey">#9E9E9E</color>
-    <color name="dark_grey">#616161</color>
+    <!-- Gradient Animation Colors -->
+    <color name="startColor">#FF0000</color> <!-- Red can remain the same if it suits the theme -->
+    <color name="endColor">#0000FF</color> <!-- Blue, also suitable for dark themes -->
 
+    <!-- Common UI Colors Adjusted for Dark Theme -->
+    <color name="light_grey">#424242</color> <!-- Darker grey for UI elements -->
+    <color name="grey">#757575</color> <!-- Mid-tone grey, slightly lighter for contrast -->
+    <color name="dark_grey">#121212</color> <!-- Light grey for elevated elements against dark backgrounds -->
 
-
-
-    <!-- Text colors -->
-    <color name="text_primary">#212121</color>
-    <color name="text_secondary">#757575</color>
-    <color name="text_icons">#FFFFFF</color>
+    <!-- Text Colors for Dark Theme -->
+    <color name="text_primary">#E0E0E0</color> <!-- Lighter grey for primary text -->
+    <color name="text_secondary">#BDBDBD</color> <!-- Light grey for secondary text -->
+    <color name="text_icons">#FFFFFF</color> <!-- White, remains effective for icons -->
 
     <!-- Dividers -->
-    <color name="divider">#BDBDBD</color>
+    <color name="divider">#757575</color> <!-- Dark theme dividers can be a bit lighter for visibility -->
 
-    <!-- Status bar color -->
-    <color name="status_bar">#D32F2F</color>
+    <!-- Status Bar Color for Dark Theme -->
+    <color name="status_bar">#B71C1C</color> <!-- Dark red, ensuring visibility on dark backgrounds -->
 </resources>
