@@ -27,7 +27,7 @@ public class SaveUserTask extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         try {
-            URL url = new URL("http://192.168.0.58/crudapp/create.php");
+            URL url = new URL("https://hamzadamra.000webhostapp.com/create.php");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);

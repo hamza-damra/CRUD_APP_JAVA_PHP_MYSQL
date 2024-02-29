@@ -33,7 +33,7 @@ public class DeleteAllUsersTask extends AsyncTask<Void, Void, Boolean> {
         String responseContent = "";
 
         try {
-            URL url = new URL("http://192.168.0.58/crudapp/delete_all_users.php");
+            URL url = new URL("https://hamzadamra.000webhostapp.com/delete_all_users.php");
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);

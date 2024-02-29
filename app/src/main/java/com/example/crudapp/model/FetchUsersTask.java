@@ -34,7 +34,7 @@ public class FetchUsersTask extends AsyncTask<Void, Void, List<User>> {
         BufferedReader reader = null;
 
         try {
-            URL url = new URL("http://192.168.0.58/crudapp/fetch_user.php");
+            URL url = new URL("https://hamzadamra.000webhostapp.com/fetch_user.php");
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 

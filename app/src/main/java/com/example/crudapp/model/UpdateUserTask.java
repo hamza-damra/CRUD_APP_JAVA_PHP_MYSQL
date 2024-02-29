@@ -30,7 +30,7 @@ public class UpdateUserTask extends AsyncTask<User, Void, String> {
 
         try {
             // Setup HttpURLConnection to send a POST request
-            URL url = new URL("http://192.168.0.58/crudapp/update_user.php");
+            URL url = new URL("https://hamzadamra.000webhostapp.com/update_user.php");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);

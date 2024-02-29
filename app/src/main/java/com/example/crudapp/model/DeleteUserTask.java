@@ -26,7 +26,7 @@ public class DeleteUserTask extends AsyncTask<User, Void, Boolean> {
         HttpURLConnection connection = null;
 
         try {
-            URL url = new URL("http://192.168.0.58/crudapp/delete_user.php");
+            URL url = new URL("https://hamzadamra.000webhostapp.com/delete_user.php");
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true); // Enable output for POST request
