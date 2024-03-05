@@ -5,4 +5,14 @@
     <string name="email">Email</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="salary">Salary</string>
+    <string name="birthdate">Birthdate</string>
+    <string name="delete_all_users">Delete all users</string>
+    <string name="crud_app">CRUD APP</string>
+    <string-array name="dropdown_items">
+        <item>Ascending</item>
+        <item>Descending</item>
+        <item>Newest</item>
+        <item>Oldest</item>
+    </string-array>
 </resources>

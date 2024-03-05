@@ -9,11 +9,25 @@
         android:id="@+id/editTextUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"/>
+        android:hint="Name" />
 
     <EditText
         android:id="@+id/editTextUserEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"/>
+        android:hint="Email" />
+
+    <EditText
+        android:id="@+id/editTextUserBirthdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Birthdate (YYYY-MM-DD)" />
+
+    <EditText
+        android:id="@+id/editTextUserSalary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Salary"
+        android:inputType="numberDecimal" />
+
 </LinearLayout>

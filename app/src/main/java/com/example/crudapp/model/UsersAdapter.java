@@ -19,6 +19,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.crudapp.R;
+import com.google.android.material.card.MaterialCardView;
+
 import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
@@ -49,12 +51,24 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         User user = users.get(position);
         holder.textViewName.setText(user.getName());
         holder.textViewEmail.setText(user.getEmail());
+        holder.textViewBirthdate.setText(user.getBirthdate().toString()); // Set birthdate
+        holder.textViewSalary.setText(user.getSalary());
 
-        if (holder.isDarkTheme(holder.textViewName.getContext())) {
+        if (ViewHolder.isDarkTheme(holder.textViewName.getContext())) {
             holder.textViewName.setTextColor(holder.textViewName.getResources().getColor(R.color.white));
             holder.textViewEmail.setTextColor(holder.textViewEmail.getResources().getColor(R.color.white));
             holder.textViewName.setHintTextColor(holder.textViewName.getResources().getColor(R.color.white));
             holder.textViewEmail.setHintTextColor(holder.textViewEmail.getResources().getColor(R.color.white));
+            holder.textViewBirthdate.setTextColor(holder.textViewBirthdate.getResources().getColor(R.color.white)); // Set birthdate
+            holder.textViewSalary.setTextColor(holder.textViewSalary.getResources().getColor(R.color.white));
+
+        } else {
+            holder.textViewName.setTextColor(holder.textViewName.getResources().getColor(R.color.black));
+            holder.textViewEmail.setTextColor(holder.textViewEmail.getResources().getColor(R.color.black));
+            holder.textViewName.setHintTextColor(holder.textViewName.getResources().getColor(R.color.black));
+            holder.textViewEmail.setHintTextColor(holder.textViewEmail.getResources().getColor(R.color.black));
+            holder.textViewBirthdate.setTextColor(holder.textViewBirthdate.getResources().getColor(R.color.black)); // Set birthdate
+            holder.textViewSalary.setTextColor(holder.textViewSalary.getResources().getColor(R.color.black));
         }
     }
 
@@ -66,13 +80,14 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewName, textViewEmail;
+        TextView textViewName, textViewEmail, textViewBirthdate, textViewSalary;
 
         public ViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewEmail = itemView.findViewById(R.id.textViewEmail);
-
+            textViewBirthdate = itemView.findViewById(R.id.textViewBirthdate); // Added
+            textViewSalary = itemView.findViewById(R.id.textViewSalary);
             // Item click listener
             itemView.setOnClickListener(v -> listener.onItemClick(getUserAtPosition(getAdapterPosition())));
 

@@ -29,37 +29,34 @@ public class UpdateUserTask extends AsyncTask<User, Void, String> {
         User user = users[0];
 
         try {
-            // Setup HttpURLConnection to send a POST request
             URL url = new URL("https://hamzadamra.000webhostapp.com/update_user.php");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
 
-            // Write POST data to request body
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
             String data = URLEncoder.encode("id", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(user.getId()), "UTF-8") + "&" +
                     URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(user.getName(), "UTF-8") + "&" +
-                    URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(user.getEmail(), "UTF-8");
+                    URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(user.getEmail(), "UTF-8") + "&" +
+                    URLEncoder.encode("birthdate", "UTF-8") + "=" + URLEncoder.encode(user.getBirthdate(), "UTF-8") + "&" +
+                    URLEncoder.encode("salary", "UTF-8") + "=" + URLEncoder.encode(user.getSalary(), "UTF-8");
+            Log.d("UpdateUserTask", "Sending data: " + data);
 
             writer.write(data);
             writer.flush();
             writer.close();
             os.close();
 
-            // Check response code to determine the result of the operation
             int responseCode = conn.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 return "User Updated Successfully";
             } else {
-                String errorMsg = "Failed to Update User. Response code: " + responseCode;
-                Log.e("UpdateUserTask", errorMsg);
-                return errorMsg;
+                return "Failed to Update User. Response code: " + responseCode;
             }
         } catch (IOException e) {
-            String errorMsg = "Error: " + e.getMessage();
-            Log.e("UpdateUserTask", errorMsg, e);
-            return errorMsg;
+            Log.e("UpdateUserTask", "Error: " + e.getMessage(), e);
+            return "Error: " + e.getMessage();
         }
     }
 
