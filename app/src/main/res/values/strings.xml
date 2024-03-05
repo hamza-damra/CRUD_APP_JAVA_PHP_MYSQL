@@ -10,9 +10,9 @@
     <string name="delete_all_users">Delete all users</string>
     <string name="crud_app">CRUD APP</string>
     <string-array name="dropdown_items">
-        <item>Ascending</item>
-        <item>Descending</item>
         <item>Newest</item>
+        <item>Descending</item>
+        <item>Ascending</item>
         <item>Oldest</item>
     </string-array>
 </resources>

@@ -8,6 +8,7 @@ import android.icu.util.LocaleData;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -49,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout constraintLayout;
     public SwipeRefreshLayout swipeRefreshLayout;
     private UsersAdapter adapter;
+    Handler handler = new Handler();
+
+    Runnable runnable;
+
+    final static int ACTIVE_POLLING_INTERVAL = 10000;
     private Spinner spinner;
     private final List<User> usersList = new ArrayList<>();
     private static final String EMAIL_PATTERN =
@@ -70,10 +78,18 @@ public class MainActivity extends AppCompatActivity {
         Button buttonDelete = findViewById(R.id.buttonDelete);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 
-
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                //check if the app is active or not and call fetchUsers() accordingly to refresh the users list
+                if (ProcessLifecycleOwner.get().getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+                    fetchUsers();
+                }
+                handler.postDelayed(this, ACTIVE_POLLING_INTERVAL);
+            }
+        };
 
 
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
@@ -275,6 +291,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void fetchUsers() {
         swipeRefreshLayout.setRefreshing(true);
-        new FetchUsersTask(this,"asc").execute();
+        new FetchUsersTask(this,"newest").execute();
     }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        handler.removeCallbacks(runnable);
+    }
+
 }

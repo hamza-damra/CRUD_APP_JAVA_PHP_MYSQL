@@ -3,17 +3,18 @@ package com.example.crudapp.model;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
-
 import com.example.crudapp.MainActivity;
-
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class DeleteUserTask extends AsyncTask<User, Void, Boolean> {
 
     private final Context context;
+    private final OkHttpClient client = new OkHttpClient();
 
     public DeleteUserTask(Context context) {
         this.context = context;
@@ -22,35 +23,22 @@ public class DeleteUserTask extends AsyncTask<User, Void, Boolean> {
     @Override
     protected Boolean doInBackground(User... users) {
         User user = users[0];
-        boolean success = false;
-        HttpURLConnection connection = null;
+        RequestBody formBody = new FormBody.Builder()
+                .add("user_id", String.valueOf(user.getId()))
+                .build();
 
-        try {
-            URL url = new URL("https://hamzadamra.000webhostapp.com/delete_user.php");
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true); // Enable output for POST request
+        Request request = new Request.Builder()
+                .url("https://hamzadamra.000webhostapp.com/delete_user.php")
+                .post(formBody)
+                .build();
 
-            // Prepare data to be sent in the request body
-            String postData = "user_id=" + user.getId();
-
-            // Write data to the output stream
-            OutputStream os = connection.getOutputStream();
-            os.write(postData.getBytes());
-            os.flush();
-
-            // Get response code
-            int responseCode = connection.getResponseCode();
-            success = responseCode == HttpURLConnection.HTTP_OK;
+        try (Response response = client.newCall(request).execute()) {
+            // Check if the request was successful
+            return response.isSuccessful();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
+            return false;
         }
-
-        return success;
     }
 
     @Override

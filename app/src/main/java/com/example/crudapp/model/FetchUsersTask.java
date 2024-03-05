@@ -1,19 +1,15 @@
 package com.example.crudapp.model;
 
-import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import com.example.crudapp.MainActivity;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +17,7 @@ public class FetchUsersTask extends AsyncTask<Void, Void, List<User>> {
 
     private WeakReference<MainActivity> mActivity;
     private String sortOption;
+    private OkHttpClient client = new OkHttpClient();
 
     public FetchUsersTask(MainActivity activity, String sortOption) {
         mActivity = new WeakReference<>(activity);
@@ -30,24 +27,15 @@ public class FetchUsersTask extends AsyncTask<Void, Void, List<User>> {
     @Override
     protected List<User> doInBackground(Void... voids) {
         List<User> users = new ArrayList<>();
-        HttpURLConnection connection = null;
-        BufferedReader reader = null;
+        Request request = new Request.Builder()
+                .url("https://hamzadamra.000webhostapp.com/fetch_user.php?sortOption=" + sortOption)
+                .build();
 
-        try {
-            URL url = new URL("https://hamzadamra.000webhostapp.com/fetch_user.php?sortOption=" + sortOption);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-            InputStream stream = connection.getInputStream();
-
-            reader = new BufferedReader(new InputStreamReader(stream));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-
-            JSONArray jsonArray = new JSONArray(response.toString());
+            String responseData = response.body().string();
+            JSONArray jsonArray = new JSONArray(responseData);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 int id = jsonObject.getInt("id");
@@ -60,17 +48,6 @@ public class FetchUsersTask extends AsyncTask<Void, Void, List<User>> {
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
         return users;

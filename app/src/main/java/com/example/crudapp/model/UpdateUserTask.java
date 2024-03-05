@@ -6,19 +6,19 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 @SuppressLint("StaticFieldLeak")
 public class UpdateUserTask extends AsyncTask<User, Void, String> {
 
     private final Context context;
+    private final OkHttpClient client = new OkHttpClient();
 
     public UpdateUserTask(Context context) {
         this.context = context;
@@ -28,31 +28,26 @@ public class UpdateUserTask extends AsyncTask<User, Void, String> {
     protected String doInBackground(User... users) {
         User user = users[0];
 
-        try {
-            URL url = new URL("https://hamzadamra.000webhostapp.com/update_user.php");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
+        RequestBody formBody = new FormBody.Builder()
+                .add("id", String.valueOf(user.getId()))
+                .add("name", user.getName())
+                .add("email", user.getEmail())
+                .add("birthdate", user.getBirthdate())
+                .add("salary", user.getSalary())
+                .build();
 
-            OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
-            String data = URLEncoder.encode("id", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(user.getId()), "UTF-8") + "&" +
-                    URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(user.getName(), "UTF-8") + "&" +
-                    URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(user.getEmail(), "UTF-8") + "&" +
-                    URLEncoder.encode("birthdate", "UTF-8") + "=" + URLEncoder.encode(user.getBirthdate(), "UTF-8") + "&" +
-                    URLEncoder.encode("salary", "UTF-8") + "=" + URLEncoder.encode(user.getSalary(), "UTF-8");
-            Log.d("UpdateUserTask", "Sending data: " + data);
+        Request request = new Request.Builder()
+                .url("https://hamzadamra.000webhostapp.com/update_user.php")
+                .post(formBody)
+                .build();
 
-            writer.write(data);
-            writer.flush();
-            writer.close();
-            os.close();
-
-            int responseCode = conn.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                Log.d("UpdateUserTask", "User Updated Successfully");
                 return "User Updated Successfully";
             } else {
-                return "Failed to Update User. Response code: " + responseCode;
+                Log.d("UpdateUserTask", "Failed to Update User. Response code: " + response.code());
+                return "Failed to Update User. Response code: " + response.code();
             }
         } catch (IOException e) {
             Log.e("UpdateUserTask", "Error: " + e.getMessage(), e);

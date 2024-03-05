@@ -4,23 +4,19 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
-
 import com.example.crudapp.MainActivity;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class DeleteAllUsersTask extends AsyncTask<Void, Void, Boolean> {
 
     @SuppressLint("StaticFieldLeak")
     private final Context context;
+    private final OkHttpClient client = new OkHttpClient();
 
     public DeleteAllUsersTask(Context context) {
         this.context = context;
@@ -28,38 +24,20 @@ public class DeleteAllUsersTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... voids) {
-        boolean success = false;
-        HttpURLConnection connection = null;
-        String responseContent = "";
+        RequestBody requestBody = RequestBody.create("", null); // Empty request body for POST
+        Request request = new Request.Builder()
+                .url("https://hamzadamra.000webhostapp.com/delete_all_users.php")
+                .post(requestBody)
+                .build();
 
-        try {
-            URL url = new URL("https://hamzadamra.000webhostapp.com/delete_all_users.php");
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
-
-            // Get response code
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                InputStream in = new BufferedInputStream(connection.getInputStream());
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                StringBuilder result = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    result.append(line);
-                }
-                responseContent = result.toString();
-                success = !responseContent.contains("No users to delete");
-            }
+        try (Response response = client.newCall(request).execute()) {
+            String responseContent = response.body().string();
+            // Check if the response indicates success or if there are no users to delete
+            return response.isSuccessful() && !responseContent.contains("No users to delete");
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
+            return false;
         }
-
-        return success;
     }
 
     @Override
@@ -68,12 +46,10 @@ public class DeleteAllUsersTask extends AsyncTask<Void, Void, Boolean> {
         if (result) {
             Toast.makeText(context, "All users deleted successfully", Toast.LENGTH_SHORT).show();
             if (context instanceof MainActivity) {
-                ((MainActivity) context).refreshUsers(new ArrayList<>()); // Clear the user list
+                ((MainActivity) context).refreshUsers(new ArrayList<>());
             }
         } else {
-            // Adjusted to handle specific no-user case based on response content
-            Toast.makeText(context, "No users to delete", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "No users to delete or failed to delete users", Toast.LENGTH_SHORT).show();
         }
     }
-
 }
