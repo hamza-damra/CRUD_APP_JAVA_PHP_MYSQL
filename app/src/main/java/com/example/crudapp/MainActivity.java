@@ -2,13 +2,16 @@ package com.example.crudapp;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.LocaleData;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -79,6 +82,13 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+
+        if(isDarkTheme(this)) {
+            editTextName.setTextColor(getResources().getColor(R.color.white));
+            editTextEmail.setTextColor(getResources().getColor(R.color.white));
+            editTextDate.setTextColor(getResources().getColor(R.color.white));
+            editTextSalary.setTextColor(getResources().getColor(R.color.white));
+        }
 
         runnable = new Runnable() {
             @Override
@@ -297,6 +307,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         handler.removeCallbacks(runnable);
+    }
+
+    public static boolean isDarkTheme(Context context) {
+        int mode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (mode == Configuration.UI_MODE_NIGHT_YES) {
+            Log.d("ThemeUtils", "Dark Theme Detected");
+            return true;
+        } else {
+            Log.d("ThemeUtils", "Light Theme Detected");
+            return false;
+        }
     }
 
 }
